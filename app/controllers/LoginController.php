@@ -14,8 +14,8 @@ class LoginController extends BaseController
         // get data from input
         $code = Input::get('code');
 
-        // get fb service
-        $gh = OAuth::consumer('github');
+        // get gh service
+        $gh = OAuth::consumer( 'GitHub', 'http://contactbook.luisfer.co/auth/github', null);
 
         // check if code is valid
 
@@ -27,11 +27,9 @@ class LoginController extends BaseController
 
             // Send a request with it
 
-            $result = json_decode($gh->request('user/emails'), true);
-            echo 'The first email on your github account is ' . $result[0];
+            $result = json_decode($gh->request('user'), true);
 
-            //Var_dump
-            //display whole array().
+
             dd($result);
 
         } // if not ask for permission first
