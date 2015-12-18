@@ -11,18 +11,21 @@
 |
 */
 
+Route::get('/', 'HomeController@index');
 
-/*Llamadas al controlador Auth*/
 Route::get('login', 'AuthController@showLogin');
 Route::post('login', 'AuthController@postLogin');
 Route::get('logout', 'AuthController@logOut');
 
-/*Rutas privadas solo para usuarios autenticados*/
+Route::get('auth/github', 'AuthController@github');
+Route::get('auth/facebook', 'AuthController@facebook');
+
+
 Route::group(['before' => 'auth'], function()
 {
     Route::get('/', 'HomeController@showWelcome'); // Vista de inicio
 });
 
-Route::get('/', 'LoginController@index');
 
-Route::any('auth/github', 'LoginController@loginWithGithub');
+
+
