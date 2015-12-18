@@ -15,7 +15,7 @@ class LoginController extends BaseController
         $code = Input::get('code');
 
         // get gh service
-        $gh = OAuth::consumer( 'GitHub', 'http://contactbook.luisfer.co/auth/github', null);
+        $gh = OAuth::consumer( 'GitHub');
 
         // check if code is valid
 
