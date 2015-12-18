@@ -25,4 +25,4 @@ Route::group(['before' => 'auth'], function()
 
 Route::get('/', 'LoginController@index');
 
-Route::get('auth/github', 'LoginController@loginWithGithub');
+Route::any('auth/github', 'LoginController@loginWithGithub');
