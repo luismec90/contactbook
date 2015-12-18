@@ -10,7 +10,7 @@ class LoginController extends BaseController
 
     public function loginWithGithub()
     {
-        dd(":a");
+
         // get data from input
         $code = Input::get('code');
 
