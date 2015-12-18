@@ -19,7 +19,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form id="login-form" action="http://phpoll.com/login/process" method="post" role="form"
+                                <form id="login-form" action="/login" method="post" role="form"
                                       style="display: block;">
                                     <div class="form-group">
                                         <input type="email" name="email" id="email" tabindex="1"
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <form id="register-form" action="http://phpoll.com/register/process" method="post"
+                                <form id="register-form" action="/register" method="post"
                                       role="form" style="display: none;">
                                     <div class="form-group">
                                         <input type="text" name="name" id="name" tabindex="1"
