@@ -21,7 +21,7 @@ class AuthController extends BaseController
 
         // Obtenemos los datos del formulario
         $data = [
-            'username' => Input::get('username'),
+            'email' => Input::get('email'),
             'password' => Input::get('password')
         ];
 
