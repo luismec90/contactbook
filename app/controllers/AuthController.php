@@ -13,12 +13,11 @@ class AuthController extends BaseController
             return Redirect::to('/');
         }
         // Si no hay sesión activa mostramos el formulario
-        return View::make('login');
+        return View::make('auth.login');
     }
 
     public function postLogin()
     {
-
         // Obtenemos los datos del formulario
         $data = [
             'email' => Input::get('email'),
@@ -37,11 +36,44 @@ class AuthController extends BaseController
         return Redirect::back()->withErrors(['Email or password incorrect!'])->withInput();
     }
 
-    public function logOut()
+    public function showSignup()
+    {
+        // Verificamos si hay sesión activa
+        if (Auth::check()) {
+            // Si tenemos sesión activa mostrará la página de inicio
+            return Redirect::to('/');
+        }
+
+
+        // Si no hay sesión activa mostramos el formulario
+        return View::make('auth.signup');
+    }
+
+    public function postSignup()
+    {
+        $validation = Validator::make(Input::all(), User::$rules);
+        if ($validation->fails()) {
+            return Redirect::back()->withInput()->withErrors($validation);
+        }
+
+        $user = new User;
+        $user->name = Input::get('name');
+        $user->email = Input::get('email');
+        $user->password = Hash::make(Input::get('password'));
+        $user->save();
+
+        Auth::login($user);
+
+        Flash::success('Welcome!');
+
+        return Redirect::route('home_path');
+    }
+
+    public function logout()
     {
         Auth::logout();
 
-        return Redirect::to('login')->with('error_message', 'Logged out correctly');
+        return Redirect::route('login_path');
     }
 
 

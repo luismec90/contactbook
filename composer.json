@@ -8,6 +8,7 @@
   "license": "MIT",
   "require": {
     "laravel/framework": "4.2.*",
+    "laracasts/flash": "~1.2",
     "artdarek/oauth-4-laravel": "dev-master"
   },
   "autoload": {

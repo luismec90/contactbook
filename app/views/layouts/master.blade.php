@@ -15,8 +15,10 @@
     <link rel="stylesheet" href="/assets/css/theme.css">
     <link rel="stylesheet" href="/assets/css/style.css">
 
+    @section('css')
+    @show
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+            <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -27,9 +29,8 @@
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-findcond navbar-fixed-top" role="navigation">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1">
@@ -40,19 +41,30 @@
             </button>
             <a class="navbar-brand" href="#">Contact Book</a>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+
+                @if(Auth::check())
+                    <li>
+                        <a href="{{ route('contacts.index') }}">Contacts</a>
+                    </li>
+                @endif
+
             </ul>
+
+            @if(Auth::check())
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ route('logout_path') }}">Log out</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            @endif
+
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -60,13 +72,19 @@
 </nav>
 
 <div class="wrapper">
-    @include('layouts.errors')
+    @include('layouts.partials.errors')
     @yield('content')
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="/assets/libs/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="/assets/js/theme.js"></script>
+
+@section('js')
+@show
+
+@include('layouts.partials.flashMessages')
 
 </body>
 
