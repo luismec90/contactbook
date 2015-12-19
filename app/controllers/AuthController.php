@@ -114,7 +114,7 @@ class AuthController extends BaseController
             $token = $fb->requestAccessToken($code);
 
             // Send a request with it
-            $result = json_decode($fb->request('/me'), true);
+            $result = json_decode($fb->request('/me?fields=name,email'), true);
 
             dd($result);
 
