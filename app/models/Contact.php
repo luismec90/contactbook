@@ -10,7 +10,10 @@ class Contact extends Eloquent
      * @var array
      */
 
-
+    public function user()
+    {
+        return $this->belongsTo('User')->orderBy('name');
+    }
 
 
 }

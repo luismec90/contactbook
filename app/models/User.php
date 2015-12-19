@@ -31,5 +31,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'password' => 'required|confirmed|min:4'
     ];
 
+    public function contacts()
+    {
+        return $this->hasMany('Contact');
+    }
+
 
 }

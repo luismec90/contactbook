@@ -39,14 +39,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Contact Book</a>
+            <a class="navbar-brand" href="#">ContactBookApp</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
 
                 @if(Auth::check())
                     <li>
-                        <a href="{{ route('contacts.index') }}">Contacts</a>
+                        <a href="{{ route('contacts.index') }}">Contact List</a>
                     </li>
                 @endif
 
@@ -71,10 +71,16 @@
     <!-- /.container -->
 </nav>
 
-<div class="wrapper">
+<div class="container">
     @include('layouts.partials.errors')
     @yield('content')
 </div>
+
+<footer>
+    <div class="container">
+        Footer...
+    </div>
+</footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

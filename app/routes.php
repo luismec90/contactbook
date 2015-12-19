@@ -21,8 +21,8 @@ Route::group(['before' => 'guest'], function () {
     Route::get('signup', ['as' => 'signup_path', 'uses' => 'AuthController@showSignup']);
     Route::post('signup', ['as' => 'signup_path', 'uses' => 'AuthController@postSignup']);
 
-    Route::get('auth/github', 'AuthController@github');
-    Route::get('auth/facebook', 'AuthController@facebook');
+    Route::get('auth/github',['as' => 'github_path', 'uses' => 'AuthController@github']);
+    Route::get('auth/facebook', ['as' => 'facebook_path', 'uses' => 'AuthController@facebook']);
 });
 
 Route::group(['before' => 'auth'], function () {

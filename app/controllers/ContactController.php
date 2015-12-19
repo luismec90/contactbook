@@ -4,6 +4,10 @@ class ContactController extends BaseController
 {
     public function index()
     {
-        return View::make('contacts.index');
+        $contacts = Auth::user()
+            ->contacts()
+            ->get();
+
+        return View::make('contacts.index', compact('contacts'));
     }
 }
