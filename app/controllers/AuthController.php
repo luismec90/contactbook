@@ -46,9 +46,7 @@ class AuthController extends BaseController
 
         Auth::login($user);
 
-        Flash::success('Welcome!');
-
-        return Redirect::route('home_path');
+        return Redirect::route('contacts.index');
     }
 
     public function logout()
@@ -81,11 +79,14 @@ class AuthController extends BaseController
 
             $user = User::firstOrNew(['email' => $result['email']]);
 
-            dd($user);
+            if (!$user->id) {
+                $user->name = $result['name'];
+                $user->save();
+            }
 
+            Auth::login($user);
 
-            return $result;
-
+            return Redirect::route('contacts.index');
         } // if not ask for permission first
         else {
             // get fb authorization
@@ -115,12 +116,16 @@ class AuthController extends BaseController
             // Send a request with it
             $result = json_decode($fb->request('/me'), true);
 
-            $message = 'Your unique facebook user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
-            echo $message . "<br/>";
+            $user = User::firstOrNew(['email' => $result['email']]);
 
-            //Var_dump
-            //display whole array().
-            dd($result);
+            if (!$user->id) {
+                $user->name = $result['name'];
+                $user->save();
+            }
+
+            Auth::login($user);
+
+            return Redirect::route('contacts.index');
 
         } // if not ask for permission first
         else {
