@@ -79,7 +79,7 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
-            $user = User::firstOrNew($result['email']);
+            $user = User::firstOrNew(['email' => $result['email']]);
 
             dd($user);
 
