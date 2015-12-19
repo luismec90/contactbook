@@ -116,8 +116,6 @@ class AuthController extends BaseController
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
 
-            dd($result);
-
             $user = User::firstOrNew(['email' => $result['email']]);
 
             if (!$user->id) {
