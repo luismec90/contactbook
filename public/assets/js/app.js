@@ -179,15 +179,15 @@ $(function () {
 });
 
 function updateContactsTable(contact) {
-    console.log(contact);
 
-    var customDataBtn = '<button></button>';
+    var customDataBtn = '<button class="btn btn-primary btn-xs custom-data" title="Contact custom info." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-info-sign"></span></button>';
     var editBtn = ' <button class="btn btn-primary btn-xs edit-contact" title="Edit contact." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-pencil"></span></button>';
     var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" title="Delete contact." data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
 
     var data = [contact.name, contact.surname, contact.email, contact.phone, customDataBtn, editBtn, deleteBtn];
 
-    if ($('#tr-' + contact.id) == []) {
+
+    if ($('#tr-' + contact.id).length==0) {
         var rowNode = contactsTable
             .row.add(data)
             .draw()
