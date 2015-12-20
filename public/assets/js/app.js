@@ -6,7 +6,7 @@ $(function () {
         $('#modal-create-contact').modal();
     });
 
-    $('.add-custom-field').click(function () {
+    $('#add-custom-field').click(function () {
         var totalCustomFields = $('#custom-fields-container .row').length;
         if (totalCustomFields < 5) {
             var clonedDiv = $('#custom-fields-container .row:first').clone();
@@ -20,7 +20,7 @@ $(function () {
     $(document.body).on('click', '.remove-custom-field', function () {
         var totalCustomFields = $('#custom-fields-container .row').length;
         if (totalCustomFields <= 5)
-            $(this).parent().parent().parent().parent().find('.add-custom-field').removeAttr('disabled');
+            $(this).parent().parent().parent().parent().find('#add-custom-field').removeAttr('disabled');
         if (totalCustomFields > 1)
             $(this).parent().parent().remove();
     });
@@ -55,7 +55,21 @@ $(function () {
             type: 'GET',
             dataType: 'JSON',
             success: function (data) {
-                console.log(data);
+                var totalCustomFields;
+                $('#add-custom-field').attr('disabled', false);
+                $('#custom-fields-container .row:not(:first)').remove();
+                $.each(data, function (index, element) {
+                    if (index == 0) {
+                        $('#custom-fields-container .row:first').find("input:text").val(element.content);
+                    } else {
+                        var clonedDiv = $('#custom-fields-container .row:first').clone();
+                        clonedDiv.find("input:text").val(element.content);
+                        clonedDiv.appendTo('#custom-fields-container');
+                    }
+                });
+                if (data.length >= 5) {
+                    $('#add-custom-field').attr('disabled', true);
+                }
                 $('#modal-custom-data').modal();
             }, error: function (response) {
                 coverOff();
@@ -65,6 +79,28 @@ $(function () {
 
         return false;
     });
+
+    $('#form-custom-data').submit(function (e) {
+        coverOn();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: $(this).serialize(),
+            success: function (data) {
+                coverOff();
+
+                $('#modal-custom-data').modal('hide');
+                showMessage('Custom info updated!', 'success');
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
+    });
+
 
     $(document.body).on('click', '.edit-contact', function () {
         var contactID = $(this).data('contact-id')
@@ -145,7 +181,6 @@ $(function () {
 function updateContactsTable(contact) {
     console.log(contact);
 
-
     var customDataBtn = '<button></button>';
     var editBtn = ' <button class="btn btn-primary btn-xs edit-contact" title="Edit contact." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-pencil"></span></button>';
     var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" title="Delete contact." data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
@@ -164,7 +199,6 @@ function updateContactsTable(contact) {
             .data(data)
             .draw();
     }
-
 }
 
 function coverOn() {

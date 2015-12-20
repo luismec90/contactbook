@@ -27,7 +27,18 @@ class CustomDataController extends BaseController
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
 
-        $contact->customData()->sync(Input::get('customData'));
+        $customData = [];
+
+        if (is_array(Input::get('customData'))) {
+            foreach (Input::get('customData') as $content) {
+                if (strlen($content)) {
+                    $customData[] = new CustomData(['content' => $content]);
+                }
+            }
+        }
+
+        $contact->customData()->delete();
+        $contact->customData()->saveMany($customData);
 
         return Response::json([]);
     }

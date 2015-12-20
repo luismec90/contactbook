@@ -91,7 +91,7 @@
 
                     <div class="row">
                         <div class="col-lg-12 text-center">
-                            <a class="add-custom-field btn btn-primary btn-sm">
+                            <a id="add-custom-field" class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-plus"></span> Add custom field
                             </a>
                         </div>
@@ -100,7 +100,7 @@
                     <div id="custom-fields-container">
                         <div class="row">
                             <div class="col-xs-9 col-sm-10">
-                                {{ Form::text(null,null,['name'=>'customData[]','class'=>'form-control','required'=>true]) }}
+                                {{ Form::text(null,null,['name'=>'customData[]','class'=>'form-control']) }}
                             </div>
                             <div class="col-xs-3 col-sm-2">
                                 <a class="remove-custom-field btn btn-danger btn-sm">
