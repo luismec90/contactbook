@@ -7,8 +7,24 @@
 @section('js')
     <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            contactsTable = $('#contacts-table').DataTable({
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    {"orderable": false},
+                    {"orderable": false},
+                    {"orderable": false},
+                ],
+                "bPaginate": false,
+                "info": false
+            });
+        });
+    </script>
 @stop
-
 
 @section('content')
 
@@ -17,7 +33,7 @@
     </h2>
     <hr>
 
-    <div id="error-list"></div>
+
     <div id="container-contact-list">
         @include('contacts.partials.list')
     </div>
@@ -68,7 +84,8 @@
                                 {{ Form::text('custom',null,['name'=>'customFields[]','class'=>'form-control']) }}
                             </div>
                             <div class="col-xs-3 col-sm-2">
-                                <a class="remove-custom-field btn btn-danger btn-sm" data-title="Delete" data-toggle="modal"
+                                <a class="remove-custom-field btn btn-danger btn-sm" data-title="Delete"
+                                   data-toggle="modal"
                                    data-target="#delete">
                                     <span class="glyphicon glyphicon-trash"></span></a>
                             </div>

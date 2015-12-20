@@ -1,7 +1,5 @@
-var contactsTable;
-
 $(function () {
-    contactsTable = $('#contacts-table').DataTable();
+
 
     $('#create-contact').click(function () {
         $('#form-create-contact')[0].reset();
@@ -36,18 +34,12 @@ $(function () {
             data: $(this).serialize(),
             success: function (data) {
                 coverOff();
-                addRow(data.contact);
                 $('#modal-create-contact').modal('hide');
+                addRow(data.contact);
                 showMessage('Contact created!', 'success');
             }, error: function (response) {
                 coverOff();
-                $('#modal-create-contact').modal('hide');
-
-                if (response.status == 422) {
-                    $('#error-list').html(response.responseText);
-                } else {
-                    showMessage('Something went wrong, please try again.', 'danger');
-                }
+                handleAjaxErrors(response);
             }
         });
 
@@ -85,12 +77,7 @@ $(function () {
                 showMessage('Contact deleted!', 'success');
             }, error: function (response) {
                 coverOff();
-                $('#modal-delete-contact').modal('hide');
-                if (response.status == 422) {
-                    showErrors(response.responseText);
-                } else {
-                    showMessage('Something went wrong, please try again.', 'danger');
-                }
+                handleAjaxErrors(response);
             }
         });
 
@@ -136,10 +123,21 @@ function showMessage(message, type) {
         placement: {
             from: "top",
             align: "center"
-        }
+        },
+        z_index:1060
     });
 }
 
-function handleErrors(errors) {
-
+function handleAjaxErrors(response) {
+    if (response.status == 422) {
+        var errorsList = '<ul>';
+        var json = JSON.parse(response.responseText);
+        $.each(json.errors, function (index, element) {
+            errorsList = errorsList + '<li>' + element + '</li>'
+        });
+        errorsList = errorsList + '</ul>';
+        showMessage(errorsList, 'danger');
+    } else {
+        showMessage('Something went wrong, please try again.', 'danger');
+    }
 }

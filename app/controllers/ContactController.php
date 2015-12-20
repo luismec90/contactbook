@@ -19,7 +19,16 @@ class ContactController extends BaseController
         $validator = Validator::make(Input::all(), Contact::$rules);
 
         if ($validator->fails()) {
-            return Response::json(['errors' => $validator->errors()->toArray()], 422);
+            return Response::json(['errors' => $validator->errors()], 422);
+        }
+
+        $contact = Auth::user()
+            ->contacts()
+            ->where('email', Input::get('email'))
+            ->first();
+
+        if (!is_null($contact)) {
+            return Response::json(['errors' => ['email' => 'The email has already been taken.']], 422);
         }
 
         $contact = new Contact(Input::all());
@@ -39,7 +48,7 @@ class ContactController extends BaseController
 
         $ac->api("contact/sync", $c);
 
-        return Response::json(['status' => 'ok','contact'=>$contact]);
+        return Response::json(['status' => 'ok', 'contact' => $contact]);
     }
 
     public function update($contactID)
@@ -74,7 +83,7 @@ class ContactController extends BaseController
 
         $ac->api("contact/sync", $contact);
 
-        return Response::json(['status' => 'ok', 'contactID' =>$contactID]);
+        return Response::json(['status' => 'ok', 'contactID' => $contactID]);
 
     }
 }
