@@ -5,7 +5,7 @@
         <th>Surname</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Extra data</th>
+        <th>Custom info</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -17,13 +17,16 @@
             <td>{{ $contact->surname }}</td>
             <td>{{ $contact->email }}</td>
             <td>{{ $contact->phone }}</td>
-            <td>{{ $contact->custom1 }}</td>
             <td>
-                <button class="btn btn-primary btn-xs edit-contact"><span
+                <button class="btn btn-primary btn-xs custom-data" title="Contact custom info."><span
+                            class="glyphicon glyphicon-info-sign"></span></button>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-xs edit-contact" title="Edit contact."><span
                             class="glyphicon glyphicon-pencil"></span></button>
             </td>
             <td>
-                <button class="btn btn-danger btn-xs delete-contact"
+                <button class="btn btn-danger btn-xs delete-contact" title="Delete contact."
                         data-contact-id="{{ $contact->id }}"
                         data-contact-name="{{ $contact->name }}">
                     <span class="glyphicon glyphicon-trash"></span>

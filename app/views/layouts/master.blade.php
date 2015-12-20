@@ -71,21 +71,23 @@
     <!-- /.container -->
 </nav>
 
-<div class="container">
-    @include('layouts.partials.errors')
-    @yield('content')
+<div class='wrapper'>
+    <div class="container">
+        @include('layouts.partials.errors')
+        @yield('content')
+    </div>
 </div>
 
-<footer>
+<div class="footer">
     <div class="container">
-        Footer...
+        <b class="copyright">© 2015 Luis Montoya - https://luisfer.co </b>
     </div>
-</footer>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="/assets/libs/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="/assets/js/theme.js"></script>
+<script src="/assets/js/app.js"></script>
 
 @section('js')
 @show
