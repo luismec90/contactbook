@@ -91,19 +91,19 @@
 
                     <div class="row">
                         <div class="col-lg-12 text-center">
-                            <a id="add-custom-field" class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-plus"></span> Add custom field
+                            <a id="add-custom-data" class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-plus"></span> Add custom data
                             </a>
                         </div>
                     </div>
                     <br>
-                    <div id="custom-fields-container">
+                    <div id="custom-data-container">
                         <div class="row">
                             <div class="col-xs-9 col-sm-10">
                                 {{ Form::text(null,null,['name'=>'customData[]','class'=>'form-control']) }}
                             </div>
                             <div class="col-xs-3 col-sm-2">
-                                <a class="remove-custom-field btn btn-danger btn-sm">
+                                <a class="remove-custom-data btn btn-danger btn-sm">
                                     <span class="glyphicon glyphicon-trash"></span></a>
                             </div>
                         </div>

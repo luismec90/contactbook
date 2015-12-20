@@ -1,28 +1,10 @@
 $(function () {
 
 
+    /* Create contact */
     $('#create-contact').click(function () {
         $('#form-create-contact')[0].reset();
         $('#modal-create-contact').modal();
-    });
-
-    $('#add-custom-field').click(function () {
-        var totalCustomFields = $('#custom-fields-container .row').length;
-        if (totalCustomFields < 5) {
-            var clonedDiv = $('#custom-fields-container .row:first').clone();
-            clonedDiv.find("input:text").val("");
-            clonedDiv.appendTo('#custom-fields-container');
-        }
-        if (totalCustomFields == 4)
-            $(this).attr('disabled', true);
-    });
-
-    $(document.body).on('click', '.remove-custom-field', function () {
-        var totalCustomFields = $('#custom-fields-container .row').length;
-        if (totalCustomFields <= 5)
-            $(this).parent().parent().parent().parent().find('#add-custom-field').removeAttr('disabled');
-        if (totalCustomFields > 1)
-            $(this).parent().parent().remove();
     });
 
     $('#form-create-contact').submit(function (e) {
@@ -46,62 +28,7 @@ $(function () {
         return false;
     });
 
-    $(document.body).on('click', '.custom-data', function () {
-        var contactID = $(this).data('contact-id')
-        var route = '/contacts/' + contactID + '/custom-data';
-        $('#form-custom-data').attr('action', route);
-        $.ajax({
-            url: route,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function (data) {
-                var totalCustomFields;
-                $('#add-custom-field').attr('disabled', false);
-                $('#custom-fields-container .row:not(:first)').remove();
-                $.each(data, function (index, element) {
-                    if (index == 0) {
-                        $('#custom-fields-container .row:first').find("input:text").val(element.content);
-                    } else {
-                        var clonedDiv = $('#custom-fields-container .row:first').clone();
-                        clonedDiv.find("input:text").val(element.content);
-                        clonedDiv.appendTo('#custom-fields-container');
-                    }
-                });
-                if (data.length >= 5) {
-                    $('#add-custom-field').attr('disabled', true);
-                }
-                $('#modal-custom-data').modal();
-            }, error: function (response) {
-                coverOff();
-                handleAjaxErrors(response);
-            }
-        });
-
-        return false;
-    });
-
-    $('#form-custom-data').submit(function (e) {
-        coverOn();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            dataType: 'JSON',
-            data: $(this).serialize(),
-            success: function (data) {
-                coverOff();
-
-                $('#modal-custom-data').modal('hide');
-                showMessage('Custom info updated!', 'success');
-            }, error: function (response) {
-                coverOff();
-                handleAjaxErrors(response);
-            }
-        });
-
-        return false;
-    });
-
-
+    /* Update Contact */
     $(document.body).on('click', '.edit-contact', function () {
         var contactID = $(this).data('contact-id')
         var route = '/contacts/' + contactID;
@@ -146,6 +73,86 @@ $(function () {
 
         return false;
     });
+
+    /* Update Custom Data*/
+    $('#add-custom-data').click(function () {
+        var totalCustomData = $('#custom-data-container .row').length;
+        if (totalCustomData < 5) {
+            var clonedDiv = $('#custom-data-container .row:first').clone();
+            clonedDiv.find("input:text").val("");
+            clonedDiv.appendTo('#custom-data-container');
+        }
+        if (totalCustomData == 4)
+            $(this).attr('disabled', true);
+    });
+
+    $(document.body).on('click', '.remove-custom-data', function () {
+        var totalCustomData = $('#custom-data-container .row').length;
+        if (totalCustomData <= 5)
+            $(this).parent().parent().parent().parent().find('#add-custom-data').removeAttr('disabled');
+        if (totalCustomData > 1)
+            $(this).parent().parent().remove();
+    });
+
+
+
+    $(document.body).on('click', '.custom-data', function () {
+        var contactID = $(this).data('contact-id')
+        var route = '/contacts/' + contactID + '/custom-data';
+        $('#form-custom-data').attr('action', route);
+        $.ajax({
+            url: route,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                var totalCustomData;
+                $('#add-custom-data').attr('disabled', false);
+                $('#custom-data-container .row:not(:first)').remove();
+                $.each(data, function (index, element) {
+                    if (index == 0) {
+                        $('#custom-data-container .row:first').find("input:text").val(element.content);
+                    } else {
+                        var clonedDiv = $('#custom-data-container .row:first').clone();
+                        clonedDiv.find("input:text").val(element.content);
+                        clonedDiv.appendTo('#custom-data-container');
+                    }
+                });
+                if (data.length >= 5) {
+                    $('#add-custom-data').attr('disabled', true);
+                }
+                $('#modal-custom-data').modal();
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
+    });
+
+    $('#form-custom-data').submit(function (e) {
+        coverOn();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: $(this).serialize(),
+            success: function (data) {
+                coverOff();
+
+                $('#modal-custom-data').modal('hide');
+                showMessage('Custom info updated!', 'success');
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
+    });
+
+
+
 
     $(document.body).on('click', '.delete-contact', function () {
         var contactID = $(this).data('contact-id')
