@@ -1,6 +1,5 @@
 $(function () {
 
-
     /* Create contact */
     $('#create-contact').click(function () {
         $('#form-create-contact')[0].reset();
@@ -14,10 +13,10 @@ $(function () {
             type: 'POST',
             dataType: 'JSON',
             data: $(this).serialize(),
-            success: function (data) {
+            success: function (response) {
                 coverOff();
                 $('#modal-create-contact').modal('hide');
-                updateContactsTable(data);
+                updateContactsTable(response.data);
                 showMessage('Contact created!', 'success');
             }, error: function (response) {
                 coverOff();
@@ -38,11 +37,12 @@ $(function () {
             url: route,
             type: 'GET',
             dataType: 'JSON',
-            success: function (data) {
-                $('#edit-name').val(data.name);
-                $('#edit-surname').val(data.surname);
-                $('#edit-email').val(data.email);
-                $('#edit-phone').val(data.phone);
+            success: function (response) {
+                var contact = response.data;
+                $('#edit-name').val(contact.name);
+                $('#edit-surname').val(contact.surname);
+                $('#edit-email').val(contact.email);
+                $('#edit-phone').val(contact.phone);
                 $('#modal-edit-contact').modal();
             }, error: function (response) {
                 coverOff();
@@ -60,10 +60,10 @@ $(function () {
             type: 'POST',
             dataType: 'JSON',
             data: $(this).serialize(),
-            success: function (data) {
+            success: function (response) {
                 coverOff();
                 $('#modal-edit-contact').modal('hide');
-                updateContactsTable(data);
+                updateContactsTable(response.data);
                 showMessage('Contact updated!', 'success');
             }, error: function (response) {
                 coverOff();
@@ -95,7 +95,6 @@ $(function () {
     });
 
 
-
     $(document.body).on('click', '.custom-data', function () {
         var contactID = $(this).data('contact-id')
         var route = '/contacts/' + contactID + '/custom-data';
@@ -104,11 +103,11 @@ $(function () {
             url: route,
             type: 'GET',
             dataType: 'JSON',
-            success: function (data) {
+            success: function (response) {
                 var totalCustomData;
                 $('#add-custom-data').attr('disabled', false);
                 $('#custom-data-container .row:not(:first)').remove();
-                $.each(data, function (index, element) {
+                $.each(response.data, function (index, element) {
                     if (index == 0) {
                         $('#custom-data-container .row:first').find("input:text").val(element.content);
                     } else {
@@ -137,9 +136,8 @@ $(function () {
             type: 'POST',
             dataType: 'JSON',
             data: $(this).serialize(),
-            success: function (data) {
+            success: function (response) {
                 coverOff();
-
                 $('#modal-custom-data').modal('hide');
                 showMessage('Custom info updated!', 'success');
             }, error: function (response) {
@@ -151,9 +149,7 @@ $(function () {
         return false;
     });
 
-
-
-
+    /* Delete Contact */
     $(document.body).on('click', '.delete-contact', function () {
         var contactID = $(this).data('contact-id')
         var contactName = $(this).data('contact-name')
@@ -170,9 +166,9 @@ $(function () {
             type: 'POST',
             dataType: 'JSON',
             data: $(this).serialize(),
-            success: function (data) {
+            success: function (response) {
                 coverOff();
-                $('#tr-' + data.contactID).remove();
+                $('#tr-' + response.data.id).remove();
                 $('#modal-delete-contact').modal('hide');
                 showMessage('Contact deleted!', 'success');
             }, error: function (response) {
@@ -185,16 +181,15 @@ $(function () {
     });
 });
 
+/* Helpers */
 function updateContactsTable(contact) {
-
     var customDataBtn = '<button class="btn btn-primary btn-xs custom-data" title="Contact custom info." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-info-sign"></span></button>';
     var editBtn = ' <button class="btn btn-primary btn-xs edit-contact" title="Edit contact." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-pencil"></span></button>';
     var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" title="Delete contact." data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
 
     var data = [contact.name, contact.surname, contact.email, contact.phone, customDataBtn, editBtn, deleteBtn];
 
-
-    if ($('#tr-' + contact.id).length==0) {
+    if ($('#tr-' + contact.id).length == 0) {
         var rowNode = contactsTable
             .row.add(data)
             .draw()

@@ -8,12 +8,11 @@ class CustomDataController extends BaseController
         $contact = Auth::user()
             ->contacts()
             ->find($contactID);
-
         if (is_null($contact)) {
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
 
-        return Response::json($contact->customData);
+        return Response::json(['data' => $contact->customData]);
     }
 
 
@@ -22,13 +21,10 @@ class CustomDataController extends BaseController
         $contact = Auth::user()
             ->contacts()
             ->find($contactID);
-
         if (is_null($contact)) {
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
-
         $customData = [];
-
         if (is_array(Input::get('customData'))) {
             foreach (Input::get('customData') as $content) {
                 if (strlen($content)) {
@@ -36,10 +32,9 @@ class CustomDataController extends BaseController
                 }
             }
         }
-
         $contact->customData()->delete();
         $contact->customData()->saveMany($customData);
 
-        return Response::json([]);
+        return Response::json();
     }
 }

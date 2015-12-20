@@ -12,13 +12,10 @@ class AuthController extends BaseController
 
     public function postLogin()
     {
+        $data = ['email' => Input::get('email'),
+            'password' => Input::get('password')];
 
-        $data = [
-            'email' => Input::get('email'),
-            'password' => Input::get('password')
-        ];
-
-        if (Auth::attempt($data, Input::get('remember'))) // Como segundo parámetro pasámos el checkbox para sabes si queremos recordar la contraseña
+        if (Auth::attempt($data, Input::get('remember')))
         {
             return Redirect::intended('/');
         }
@@ -37,7 +34,6 @@ class AuthController extends BaseController
         if ($validation->fails()) {
             return Redirect::back()->withInput()->withErrors($validation);
         }
-
         $user = new User;
         $user->name = Input::get('name');
         $user->email = Input::get('email');
@@ -73,8 +69,6 @@ class AuthController extends BaseController
             // This was a callback request from facebook, get the token
             $gh->requestAccessToken($code);
 
-            // Send a request with it
-
             $result = json_decode($gh->request('user'), true);
 
             $user = User::firstOrNew(['email' => $result['email']]);
@@ -104,8 +98,6 @@ class AuthController extends BaseController
 
         // get fb service
         $fb = OAuth::consumer('Facebook');
-
-        // check if code is valid
 
         // if code is provided get user data and sign in
         if (!empty($code)) {
