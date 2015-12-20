@@ -116,7 +116,7 @@ $(function () {
                         clonedDiv.appendTo('#custom-data-container');
                     }
                 });
-                if (data.length >= 5) {
+                if (response.data.length >= 5) {
                     $('#add-custom-data').attr('disabled', true);
                 }
                 $('#modal-custom-data').modal();
@@ -168,7 +168,7 @@ $(function () {
             data: $(this).serialize(),
             success: function (response) {
                 coverOff();
-                $('#tr-' + response.data.id).remove();
+                contactsTable.rows('#tr-' + response.data.id).remove().draw();
                 $('#modal-delete-contact').modal('hide');
                 showMessage('Contact deleted!', 'success');
             }, error: function (response) {
