@@ -48,7 +48,26 @@
                 </div>
                 <div class="modal-body">
 
-                    @include('contacts.partials.createUpdateForm')
+                    <div class="form-group">
+                        {{ Form::label('name','Name:') }}
+                        {{ Form::text('name',null,['class'=>'form-control','required'=>'required']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('surname','Surname:') }}
+                        {{ Form::text('surname',null,['class'=>'form-control']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('email','Email:') }}
+                        {{ Form::email('email',null,['class'=>'form-control','required'=>'required']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('phone','Phone:') }}
+                        {{ Form::text('phone',null,['class'=>'form-control']) }}
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">
@@ -63,7 +82,7 @@
     <div class="modal fade" id="modal-custom-data">
         <div class="modal-dialog">
             <div class="modal-content">
-                {{ Form::open(['id'=>'form-create-contact','route'=>'contacts.store']) }}
+                {{ Form::open(['id'=>'form-custom-data','method'=>'PUT']) }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Contact custom info</h4>
@@ -81,12 +100,10 @@
                     <div id="custom-fields-container">
                         <div class="row">
                             <div class="col-xs-9 col-sm-10">
-                                {{ Form::text('custom',null,['name'=>'customFields[]','class'=>'form-control']) }}
+                                {{ Form::text(null,null,['name'=>'customData[]','class'=>'form-control','required'=>true]) }}
                             </div>
                             <div class="col-xs-3 col-sm-2">
-                                <a class="remove-custom-field btn btn-danger btn-sm" data-title="Delete"
-                                   data-toggle="modal"
-                                   data-target="#delete">
+                                <a class="remove-custom-field btn btn-danger btn-sm">
                                     <span class="glyphicon glyphicon-trash"></span></a>
                             </div>
                         </div>
@@ -108,12 +125,31 @@
     <div class="modal fade" id="modal-edit-contact">
         <div class="modal-dialog">
             <div class="modal-content">
-                {{ Form::open(['id'=>'form-edit-contact','route'=>'contacts.update','method'=>'PUT']) }}
+                {{ Form::open(['id'=>'form-edit-contact','method'=>'PUT']) }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Edit contact</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        {{ Form::label('name','Name:') }}
+                        {{ Form::text('name',null,['id'=>'edit-name','class'=>'form-control','required'=>'required']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('surname','Surname:') }}
+                        {{ Form::text('surname',null,['id'=>'edit-surname','class'=>'form-control']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('email','Email:') }}
+                        {{ Form::email('email',null,['id'=>'edit-email','class'=>'form-control','required'=>'required']) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::label('phone','Phone:') }}
+                        {{ Form::text('phone',null,['id'=>'edit-phone','class'=>'form-control']) }}
+                    </div>
 
                 </div>
                 <div class="modal-footer">

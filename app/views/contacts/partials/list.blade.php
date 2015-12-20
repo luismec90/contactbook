@@ -18,11 +18,13 @@
             <td>{{ $contact->email }}</td>
             <td>{{ $contact->phone }}</td>
             <td>
-                <button class="btn btn-primary btn-xs custom-data" title="Contact custom info."><span
+                <button class="btn btn-primary btn-xs custom-data" title="Contact custom info."
+                        data-contact-id="{{ $contact->id }}"><span
                             class="glyphicon glyphicon-info-sign"></span></button>
             </td>
             <td>
-                <button class="btn btn-primary btn-xs edit-contact" title="Edit contact."><span
+                <button class="btn btn-primary btn-xs edit-contact" title="Edit contact."
+                        data-contact-id="{{ $contact->id }}"><span
                             class="glyphicon glyphicon-pencil"></span></button>
             </td>
             <td>

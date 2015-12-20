@@ -35,7 +35,7 @@ $(function () {
             success: function (data) {
                 coverOff();
                 $('#modal-create-contact').modal('hide');
-                addRow(data.contact);
+                updateContactsTable(data);
                 showMessage('Contact created!', 'success');
             }, error: function (response) {
                 coverOff();
@@ -47,11 +47,68 @@ $(function () {
     });
 
     $(document.body).on('click', '.custom-data', function () {
-        $('#modal-custom-data').modal();
+        var contactID = $(this).data('contact-id')
+        var route = '/contacts/' + contactID + '/custom-data';
+        $('#form-custom-data').attr('action', route);
+        $.ajax({
+            url: route,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                console.log(data);
+                $('#modal-custom-data').modal();
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
     });
 
     $(document.body).on('click', '.edit-contact', function () {
-        $('#modal-edit-contact').modal();
+        var contactID = $(this).data('contact-id')
+        var route = '/contacts/' + contactID;
+        $('#form-edit-contact').attr('action', route);
+
+        $.ajax({
+            url: route,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                $('#edit-name').val(data.name);
+                $('#edit-surname').val(data.surname);
+                $('#edit-email').val(data.email);
+                $('#edit-phone').val(data.phone);
+                $('#modal-edit-contact').modal();
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
+    });
+
+    $('#form-edit-contact').submit(function (e) {
+        coverOn();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: $(this).serialize(),
+            success: function (data) {
+                coverOff();
+                $('#modal-edit-contact').modal('hide');
+                updateContactsTable(data);
+                showMessage('Contact updated!', 'success');
+            }, error: function (response) {
+                coverOff();
+                handleAjaxErrors(response);
+            }
+        });
+
+        return false;
     });
 
     $(document.body).on('click', '.delete-contact', function () {
@@ -85,17 +142,28 @@ $(function () {
     });
 });
 
-function addRow(contact) {
+function updateContactsTable(contact) {
+    console.log(contact);
 
-    var editBtn = '';
-    var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
 
-    var rowNode = contactsTable
-        .row.add([contact.name, contact.surname, contact.email, contact.phone, '-', 'asdsad', deleteBtn])
-        .draw()
-        .node();
+    var customDataBtn = '<button></button>';
+    var editBtn = ' <button class="btn btn-primary btn-xs edit-contact" title="Edit contact." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-pencil"></span></button>';
+    var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" title="Delete contact." data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
 
-    $(rowNode).attr('id', 'tr-' + contact.id);
+    var data = [contact.name, contact.surname, contact.email, contact.phone, customDataBtn, editBtn, deleteBtn];
+
+    if ($('#tr-' + contact.id) == []) {
+        var rowNode = contactsTable
+            .row.add(data)
+            .draw()
+            .node();
+        $(rowNode).attr('id', 'tr-' + contact.id);
+    } else {
+        contactsTable
+            .row($('#tr-' + contact.id))
+            .data(data)
+            .draw();
+    }
 
 }
 
@@ -124,7 +192,7 @@ function showMessage(message, type) {
             from: "top",
             align: "center"
         },
-        z_index:1060
+        z_index: 1060
     });
 }
 

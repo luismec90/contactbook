@@ -21,7 +21,7 @@ Route::group(['before' => 'guest'], function () {
     Route::get('signup', ['as' => 'signup_path', 'uses' => 'AuthController@showSignup']);
     Route::post('signup', ['as' => 'signup_path', 'uses' => 'AuthController@postSignup']);
 
-    Route::get('auth/github',['as' => 'github_path', 'uses' => 'AuthController@github']);
+    Route::get('auth/github', ['as' => 'github_path', 'uses' => 'AuthController@github']);
     Route::get('auth/facebook', ['as' => 'facebook_path', 'uses' => 'AuthController@facebook']);
 });
 
@@ -31,6 +31,11 @@ Route::group(['before' => 'auth'], function () {
 
     Route::get('/', ['as' => 'home_path', 'uses' => 'HomeController@index']);
     Route::resource('contacts', 'ContactController');
+
+    Route::group(['prefix' => 'contacts/{contactID}'], function () {
+        Route::get('/custom-data', ['as' => 'custom_data_path', 'uses' => 'CustomDataController@show']);
+        Route::put('/custom-data', ['as' => 'custom_data_path', 'uses' => 'CustomDataController@update']);
+    });
 });
 
 
