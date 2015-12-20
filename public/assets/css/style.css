@@ -1,0 +1,29 @@
+#cover-display {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #444;
+    background: rgba(68, 68, 68, 0.95);
+    overflow: hidden;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    z-index: 1500;
+}
+
+#img-loading {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -32px;
+    margin-left: -32px;
+}
+
+#custom-fields-container .row {
+    margin-bottom: 20px;
+}
+
+#custom-fields-container .row:first-child .remove-custom-field {
+    display: none;
+}

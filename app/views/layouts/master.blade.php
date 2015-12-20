@@ -92,6 +92,10 @@
 
 @include('layouts.partials.flashMessages')
 
+<div id="cover-display">
+    <img id="img-loading" src="/assets/images/loading.gif" width="64" height="64" alt="Loading...">
+</div>
+
 </body>
 
 </html>

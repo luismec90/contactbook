@@ -3,17 +3,22 @@
 
 class Contact extends Eloquent
 {
+    protected $fillable = array('name', 'surname', 'email', 'phone');
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
+    public static $rules = [
+        'name' => 'required',
+        'email' => 'required|email',
+    ];
 
     public function user()
     {
         return $this->belongsTo('User')->orderBy('name');
     }
 
+
+    public function customData()
+    {
+        return $this->hasMany('CustomData');
+    }
 
 }

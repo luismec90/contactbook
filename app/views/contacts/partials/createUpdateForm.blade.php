@@ -15,14 +15,14 @@
 
 <div class="form-group">
     {{ Form::label('phone','Phone:') }}
-    {{ Form::email('phone',null,['class'=>'form-control']) }}
+    {{ Form::text('phone',null,['class'=>'form-control']) }}
 </div>
 
 <div class="row">
     <div class="col-lg-12 text-center">
-        <a class="add-custom-field btn btn-primary btn-sm" data-title="Edit" data-toggle="modal"
-           data-target="#edit"><span
-                    class="glyphicon glyphicon-plus"></span> Add custom field</a>
+        <a class="add-custom-field btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-plus"></span> Add custom field
+        </a>
     </div>
 </div>
 <br>
@@ -32,7 +32,8 @@
             {{ Form::text('custom',null,['name'=>'customFields[]','class'=>'form-control']) }}
         </div>
         <div class="col-xs-3 col-sm-2">
-            <a class="remove-custom-field btn btn-danger btn-sm" data-title="Delete" data-toggle="modal" data-target="#delete">
+            <a class="remove-custom-field btn btn-danger btn-sm" data-title="Delete" data-toggle="modal"
+               data-target="#delete">
                 <span class="glyphicon glyphicon-trash"></span></a>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<table class="table table-stripped table-hover">
+<table id="contacts-table" class="table table-stripped table-hover">
     <thead>
     <tr>
         <th>Name</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
     @foreach($contacts as $contact)
-        <tr>
+        <tr id="tr-{{ $contact->id }}">
             <td>{{ $contact->name }}</td>
             <td>{{ $contact->surname }}</td>
             <td>{{ $contact->email }}</td>
@@ -23,7 +23,9 @@
                             class="glyphicon glyphicon-pencil"></span></button>
             </td>
             <td>
-                <button class="btn btn-danger btn-xs delete-contact">
+                <button class="btn btn-danger btn-xs delete-contact"
+                        data-contact-id="{{ $contact->id }}"
+                        data-contact-name="{{ $contact->name }}">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
             </td>
