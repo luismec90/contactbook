@@ -1,14 +1,19 @@
 @extends('layouts.master')
 
 @section('css')
+    {{--
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
+      --}}
 @stop
 
 @section('js')
+    {{--
     <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+    --}}
     <script>
         $(function () {
+            {{--
             contactsTable = $('#contacts-table').DataTable({
                 "columns": [
                     null,
@@ -22,58 +27,35 @@
                 "bPaginate": false,
                 "info": false
             });
+             --}}
         });
     </script>
 @stop
 
 @section('content')
 
-    <h2>Contact List
-        <button id="create-contact" class="btn btn-primary pull-right">Create</button>
-    </h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Contact List</h2>
+        </div>
+        <div class="pull-right" style="margin-top:20px; margin-left:10px;">
+            <button id="create-contact" class="btn btn-primary block-level">Create Contact</button>
+        </div>
+        <div class="col-lg-4 pull-right">
+            <form name="search-form" id="search-form">
+                <div class="form-group">
+                    <label class="control-label" for="search"></label>
+                    <input class="form-control" id="search" type="text" value="" placeholder="Search for Contacts">
+                </div>
+            </form>
+        </div>
+
+    </div>
+
     <hr>
 
     <div id="container-contact-list">
-        <table id="contacts-table" class="table table-stripped table-hover">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Custom fields</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($contacts as $contact)
-                <tr id="tr-{{ $contact->id }}">
-                    <td>{{ $contact->name }}</td>
-                    <td>{{ $contact->surname }}</td>
-                    <td>{{ $contact->email }}</td>
-                    <td>{{ $contact->phone }}</td>
-                    <td>
-                        <button class="btn btn-primary btn-xs custom-data" title="Contact custom info."
-                                data-contact-id="{{ $contact->id }}"><span
-                                    class="glyphicon glyphicon-info-sign"></span></button>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-xs edit-contact" title="Edit contact."
-                                data-contact-id="{{ $contact->id }}"><span
-                                    class="glyphicon glyphicon-pencil"></span></button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger btn-xs delete-contact" title="Delete contact."
-                                data-contact-id="{{ $contact->id }}"
-                                data-contact-name="{{ $contact->name }}">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        @include('contacts.partials.list')
     </div>
 
     <div class="modal fade" id="modal-create-contact">

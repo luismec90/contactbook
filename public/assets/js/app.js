@@ -179,28 +179,38 @@ $(function () {
 
         return false;
     });
+
+
+    $('#search').keyup(function () {
+
+        var criteria = $(this).val();
+
+        $.ajax({
+            url: '/search/contacts/' + criteria,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                $('#container-contact-list').html(response.data)
+            }, error: function (response) {
+                handleAjaxErrors(response);
+            }
+        });
+
+    });
 });
 
 /* Helpers */
 function updateContactsTable(contact) {
-    var customDataBtn = '<button class="btn btn-primary btn-xs custom-data" title="Contact custom info." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-info-sign"></span></button>';
-    var editBtn = ' <button class="btn btn-primary btn-xs edit-contact" title="Edit contact." data-contact-id="' + contact.id + '"><span class="glyphicon glyphicon-pencil"></span></button>';
-    var deleteBtn = '<button class="btn btn-danger btn-xs delete-contact" title="Delete contact." data-contact-id="' + contact.id + '" data-contact-name="' + contact.name + '"> <span class="glyphicon glyphicon-trash"></span> </button>';
-
-    var data = [contact.name, contact.surname, contact.email, contact.phone, customDataBtn, editBtn, deleteBtn];
-
-    if ($('#tr-' + contact.id).length == 0) {
-        var rowNode = contactsTable
-            .row.add(data)
-            .draw()
-            .node();
-        $(rowNode).attr('id', 'tr-' + contact.id);
-    } else {
-        contactsTable
-            .row($('#tr-' + contact.id))
-            .data(data)
-            .draw();
-    }
+    $.ajax({
+        url: '/contacts',
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (response) {
+            $('#container-contact-list').html(response.data)
+        }, error: function (response) {
+            handleAjaxErrors(response);
+        }
+    });
 }
 
 function coverOn() {

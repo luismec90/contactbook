@@ -14,6 +14,20 @@ class ContactRepository
             ->get();
     }
 
+    public function search($criteria, User $user)
+    {
+        return $user->contacts()
+            ->where(function ($query) use ($criteria) {
+                if ($criteria != '')
+                    $query
+                        ->orWhere('name', 'LIKE', "%$criteria%")
+                        ->orWhere('surname', 'LIKE', "%$criteria%")
+                        ->orWhere('email', 'LIKE', "%$criteria%")
+                        ->orWhere('phone', 'LIKE', "%$criteria%");
+            })->orderBy('name')
+            ->get();
+    }
+
     public function find($contactID, User $user)
     {
         return $user->contacts()

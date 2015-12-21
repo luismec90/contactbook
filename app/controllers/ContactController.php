@@ -18,7 +18,21 @@ class ContactController extends BaseController
     {
         $contacts = $this->contacts->getAll(Auth::user());
 
-        return View::make('contacts.index', compact('contacts'));
+        if (Request::ajax()) {
+            $query = View::make('contacts.partials.list', compact('contacts'))->render();
+            return Response::json(['data' => $query]);
+        } else {
+            return View::make('contacts.index', compact('contacts'));
+        }
+
+    }
+
+    public function search($criteria = '')
+    {
+        $contacts = $this->contacts->search($criteria, Auth::user());
+
+        $query = View::make('contacts.partials.list', compact('contacts'))->render();
+        return Response::json(['data' => $query]);
     }
 
     public function show($contactID)

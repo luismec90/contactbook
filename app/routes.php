@@ -24,6 +24,7 @@ Route::group(['before' => 'auth'], function () {
     Route::get('logout', ['as' => 'logout_path', 'uses' => 'AuthController@logout']);
     Route::get('/', ['as' => 'home_path', 'uses' => 'HomeController@index']);
     Route::resource('contacts', 'ContactController');
+    Route::get('/search/contacts/{criteria?}', ['as' => 'search_path', 'uses' => 'ContactController@search']);
     Route::group(['prefix' => 'contacts/{contactID}'], function () {
         Route::get('/custom-data', ['as' => 'custom_data_path', 'uses' => 'CustomDataController@show']);
         Route::put('/custom-data', ['as' => 'custom_data_path', 'uses' => 'CustomDataController@update']);
