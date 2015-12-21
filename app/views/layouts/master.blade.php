@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="stylesheet" href="/css/app.css">
 
     @section('css')
     @show
@@ -36,13 +36,13 @@
 @include('layouts.partials.footer')
 
 <div id="cover-display">
-    <img id="img-loading" src="/assets/images/loading.gif" width="64" height="64" alt="Loading...">
+    <img id="img-loading" src="/images/loading.gif" width="64" height="64" alt="Loading...">
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="/assets/libs/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="/assets/js/app.js"></script>
+<script src="/libs/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/js/app.js"></script>
 
 @section('js')
 @show
