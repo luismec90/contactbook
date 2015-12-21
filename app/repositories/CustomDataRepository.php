@@ -13,7 +13,7 @@ class CustomDataRepository
         return $contact->customData;
     }
 
-    public function syncData($input, Contact $contact)
+    public function sync($input, Contact $contact)
     {
         $customData = [];
 

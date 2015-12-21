@@ -1,17 +1,17 @@
 <?php
 
 use App\Repositories\ContactRepository;
+use App\Repositories\ActiveCampaignRepository;
 
 class ContactController extends BaseController
 {
-    private $activeCampaignApiURL = "https://luisfer.api-us1.com";
-    private $activeCampaignApiKey = "af258ef86abbc89fcbeab50a4bc75b97deb7e0486d7d1f355e9b4462871244ce8307f659";
-
     protected $contacts;
+    protected $activeCampaign;
 
-    public function __construct(ContactRepository $contacts)
+    public function __construct(ContactRepository $contacts, ActiveCampaignRepository $activeCampaign)
     {
         $this->contacts = $contacts;
+        $this->activeCampaign = $activeCampaign;
     }
 
     public function index()
@@ -57,10 +57,10 @@ class ContactController extends BaseController
         if (!is_null($contact)) {
             return Response::json(['errors' => ['email' => 'The email has already been taken.']], 422);
         }
-
         $contact = new Contact(Input::all());
         $this->contacts->save($contact, Auth::user());
-        $this->syncContactActiveCampaign($contact, 1);
+
+        $this->activeCampaign->sync($contact, 1);
 
         return Response::json(['data' => $contact]);
     }
@@ -80,7 +80,8 @@ class ContactController extends BaseController
             return Response::json(['errors' => ['The email belongs to another user.']], 422);
         }
         $contact->update(Input::all());
-        $this->syncContactActiveCampaign($contact, 1);
+
+        $this->activeCampaign->sync($contact, 1);
 
         return Response::json(['data' => $contact]);
     }
@@ -92,22 +93,9 @@ class ContactController extends BaseController
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
         $this->contacts->delete($contact);
-        $this->syncContactActiveCampaign($contact, 2);
+
+        $this->activeCampaign->sync($contact, 2);
 
         return Response::json(['data' => $contact]);
-    }
-
-    private function syncContactActiveCampaign($contact, $status)
-    {
-        $ac = new ActiveCampaign($this->activeCampaignApiURL, $this->activeCampaignApiKey);
-        $data = array(
-            'email' => $contact->email,
-            'first_name' => $contact->name,
-            'last_name' => $contact->surname,
-            'phone' => $contact->phone,
-            'p[1]' => 1,
-            'status[1]' => $status,
-        );
-        $ac->api("contact/sync", $data);
     }
 }

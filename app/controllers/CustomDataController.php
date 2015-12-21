@@ -2,16 +2,19 @@
 
 use App\Repositories\ContactRepository;
 use App\Repositories\CustomDataRepository;
+use App\Repositories\ActiveCampaignRepository;
 
 class CustomDataController extends BaseController
 {
+
     protected $contacts;
     protected $customData;
 
-    public function __construct(ContactRepository $contacts, CustomDataRepository $customData)
+    public function __construct(ContactRepository $contacts, CustomDataRepository $customData,ActiveCampaignRepository $activeCampaign)
     {
         $this->contacts = $contacts;
         $this->customData = $customData;
+        $this->activeCampaign = $activeCampaign;
     }
 
     public function show($contactID)
@@ -38,7 +41,9 @@ class CustomDataController extends BaseController
             return Response::json(['errors' => ['Invalid data format.']], 422);
         }
 
-        $this->customData->syncData(Input::get('customData'),$contact);
+        $this->customData->sync(Input::get('customData'), $contact);
+
+        $this->activeCampaign->sync($contact, 1);
 
         return Response::json();
     }

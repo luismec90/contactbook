@@ -16,7 +16,7 @@ $(function () {
             success: function (response) {
                 coverOff();
                 $('#modal-create-contact').modal('hide');
-                updateContactsTable(response.data);
+                updateContactsTable();
                 showMessage('Contact created!', 'success');
             }, error: function (response) {
                 coverOff();
@@ -63,7 +63,7 @@ $(function () {
             success: function (response) {
                 coverOff();
                 $('#modal-edit-contact').modal('hide');
-                updateContactsTable(response.data);
+                updateContactsTable();
                 showMessage('Contact updated!', 'success');
             }, error: function (response) {
                 coverOff();
@@ -168,7 +168,7 @@ $(function () {
             data: $(this).serialize(),
             success: function (response) {
                 coverOff();
-                contactsTable.rows('#tr-' + response.data.id).remove().draw();
+                updateContactsTable();
                 $('#modal-delete-contact').modal('hide');
                 showMessage('Contact deleted!', 'success');
             }, error: function (response) {
@@ -200,7 +200,7 @@ $(function () {
 });
 
 /* Helpers */
-function updateContactsTable(contact) {
+function updateContactsTable() {
     $.ajax({
         url: '/contacts',
         type: 'GET',
