@@ -62,7 +62,7 @@ class ContactController extends BaseController
 
         $this->activeCampaign->sync($contact, 1);
 
-        return Response::json(['data' => $contact]);
+        return Response::json(['data' => []]);
     }
 
     public function update($contactID)
@@ -83,7 +83,7 @@ class ContactController extends BaseController
 
         $this->activeCampaign->sync($contact, 1);
 
-        return Response::json(['data' => $contact]);
+        return Response::json(['data' => []]);
     }
 
     public function destroy($contactID)
@@ -96,6 +96,6 @@ class ContactController extends BaseController
 
         $this->activeCampaign->sync($contact, 2);
 
-        return Response::json(['data' => $contact]);
+        return Response::json(['data' => []]);
     }
 }

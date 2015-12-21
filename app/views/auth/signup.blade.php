@@ -21,19 +21,8 @@
                 </div>
                 <div class="panel-body">
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-block btn-social btn-facebook" href="{{ route('facebook_path') }}">
-                                <span class="fa fa-facebook"></span>Sign up with Facebook
-                            </a>
-                        </div>
+                    @include('auth.partials.socialBtns')
 
-                        <div class="col-sm-6">
-                            <a class="btn btn-block btn-social btn-github" href="{{ route('github_path') }}">
-                                <span class="fa fa-github"></span>Sign up with Github
-                            </a>
-                        </div>
-                    </div>
                     <h3 class="text-muted text-center">OR</h3>
                     <div class="row">
                         <div class="col-lg-12">
