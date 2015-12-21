@@ -74,7 +74,7 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
-            $user = $this->users->firstOrCrate($result);
+            $user = $this->users->firstOrCreate($result);
 
             Auth::login($user);
 
@@ -106,7 +106,7 @@ class AuthController extends BaseController
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
 
-            $user = $this->users->firstOrCrate($result);
+            $user = $this->users->firstOrCreate($result);
 
             Auth::login($user);
 
