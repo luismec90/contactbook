@@ -13,8 +13,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 @if(Auth::check())
-                    <li>
-                        <a href="{{ route('contacts.index') }}">Contact List</a>
+                    <li class="{{ Route::currentRouteName()=='contacts.index' ? 'active' : '' }}">
+                        <a href="{{ route('contacts.index') }}">Contact List </a>
                     </li>
                 @endif
             </ul>
