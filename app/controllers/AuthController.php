@@ -74,16 +74,11 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
+            $user = $this->users->find(['facebook_id' => $result['id']]);
 
-
-            if(empty($result['email'])){
-                Flash::error('We need your email at least.');
-                return Redirect::back();
+            if (!$user) {
+                $user = $this->users->createWithFacebook($result);
             }
-
-            $user = $this->users->firstOrCreate($result);
-
-            dd($result);
 
             Auth::login($user);
 
@@ -108,21 +103,17 @@ class AuthController extends BaseController
 
         // if code is provided get user data and sign in
         if (!empty($code)) {
-
             // This was a callback request from facebook, get the token
             $token = $fb->requestAccessToken($code);
 
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
 
-            if(empty($result['email'])){
-                Flash::error('We need your email at least.');
-                return Redirect::back();
+            $user = $this->users->find(['github_id' => $result['id']]);
+
+            if (!$user) {
+                $user = $this->users->createWithGithub($result);
             }
-
-            dd($result);
-
-            $user = $this->users->firstOrCreate($result);
 
             Auth::login($user);
 

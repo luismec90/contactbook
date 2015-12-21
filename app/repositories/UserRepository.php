@@ -8,6 +8,11 @@ use Hash;
 
 class UserRepository
 {
+    public function find($data)
+    {
+        return User::find($data);
+    }
+
     public function create($data)
     {
         $user = new User;
@@ -18,15 +23,24 @@ class UserRepository
         return $user;
     }
 
-    public function firstOrCreate($data)
+    public function createWithFacebook($data)
     {
-        $user = User::firstOrNew(['email' => $data['email']]);
-        if (!$user->id) {
-            $user->name = $data['name'];
-            $user->save();
-        }
-        return  $user;
+        $user = new User;
+        $user->name = $data['name'];
+        $user->facebook_id = $data['id'];
+        $user->save();
+        return $user;
     }
+
+    public function createWithGithub($data)
+    {
+        $user = new User;
+        $user->name = $data['name'];
+        $user->github_id = $data['id'];
+        $user->save();
+        return $user;
+    }
+
 
     public function update($data, $user)
     {
