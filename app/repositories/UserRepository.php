@@ -8,9 +8,17 @@ use Hash;
 
 class UserRepository
 {
-    public function find($data)
+
+    public function findByFacebookID($facebookID)
     {
-        return User::find($data);
+        return User::where('facebook_id', $facebookID)
+            ->first();
+    }
+
+    public function findByGithubID($githubID)
+    {
+        return User::where('github_id', $githubID)
+            ->first();
     }
 
     public function create($data)

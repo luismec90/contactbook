@@ -55,6 +55,41 @@ class AuthController extends BaseController
         return Redirect::route('login_path');
     }
 
+    public function facebook()
+    {
+        // get data from input
+        $code = Input::get('code');
+
+        // get fb service
+        $fb = OAuth::consumer('Facebook');
+
+        // if code is provided get user data and sign in
+        if (!empty($code)) {
+            // This was a callback request from facebook, get the token
+            $token = $fb->requestAccessToken($code);
+
+            // Send a request with it
+            $result = json_decode($fb->request('/me?fields=name,email'), true);
+
+            $user = $this->users->findByFacebookID($result['id']);
+
+            if (!$user) {
+                $user = $this->users->createWithFacebook($result);
+            }
+
+            Auth::login($user);
+
+            return Redirect::route('contacts.index');
+
+        } // if not ask for permission first
+        else {
+            // get fb authorization
+            $url = $fb->getAuthorizationUri();
+
+            // return to facebook login url
+            return Redirect::to((string)$url);
+        }
+    }
 
     public function github()
     {
@@ -74,10 +109,10 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
-            $user = $this->users->find(['facebook_id' => $result['id']]);
+            $user = $this->users->findByGithubID($result['id']);
 
             if (!$user) {
-                $user = $this->users->createWithFacebook($result);
+                $user = $this->users->createWithGithub($result);
             }
 
             Auth::login($user);
@@ -87,42 +122,6 @@ class AuthController extends BaseController
         else {
             // get fb authorization
             $url = $gh->getAuthorizationUri();
-
-            // return to facebook login url
-            return Redirect::to((string)$url);
-        }
-    }
-
-    public function facebook()
-    {
-        // get data from input
-        $code = Input::get('code');
-
-        // get fb service
-        $fb = OAuth::consumer('Facebook');
-
-        // if code is provided get user data and sign in
-        if (!empty($code)) {
-            // This was a callback request from facebook, get the token
-            $token = $fb->requestAccessToken($code);
-
-            // Send a request with it
-            $result = json_decode($fb->request('/me?fields=name,email'), true);
-
-            $user = $this->users->find(['github_id' => $result['id']]);
-
-            if (!$user) {
-                $user = $this->users->createWithGithub($result);
-            }
-
-            Auth::login($user);
-
-            return Redirect::route('contacts.index');
-
-        } // if not ask for permission first
-        else {
-            // get fb authorization
-            $url = $fb->getAuthorizationUri();
 
             // return to facebook login url
             return Redirect::to((string)$url);
