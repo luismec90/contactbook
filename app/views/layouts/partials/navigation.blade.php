@@ -1,4 +1,4 @@
-<nav class="navbar navbar-findcond navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-findcond navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
