@@ -161,6 +161,6 @@ nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #f
     margin-bottom: 20px;
 }
 
-#custom-fields-container .row:first-child .remove-custom-field {
+#custom-data-container .row:first-child .remove-custom-data {
     display: none;
 }

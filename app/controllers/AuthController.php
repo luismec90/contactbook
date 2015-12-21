@@ -1,9 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\UserRepository;
 
 class AuthController extends BaseController
 {
+    protected $users;
+
+    public function __construct(UserRepository $users)
+    {
+        $this->users = $users;
+    }
 
     public function showLogin()
     {
@@ -15,8 +21,7 @@ class AuthController extends BaseController
         $data = ['email' => Input::get('email'),
             'password' => Input::get('password')];
 
-        if (Auth::attempt($data, Input::get('remember')))
-        {
+        if (Auth::attempt($data, Input::get('remember'))) {
             return Redirect::intended('/');
         }
 
@@ -31,14 +36,12 @@ class AuthController extends BaseController
     public function postSignup()
     {
         $validation = Validator::make(Input::all(), User::$rules);
+
         if ($validation->fails()) {
             return Redirect::back()->withInput()->withErrors($validation);
         }
-        $user = new User;
-        $user->name = Input::get('name');
-        $user->email = Input::get('email');
-        $user->password = Hash::make(Input::get('password'));
-        $user->save();
+
+        $user = $this->user->create(Input::all());
 
         Auth::login($user);
 
@@ -71,11 +74,10 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
-            $user = User::firstOrNew(['email' => $result['email']]);
+            $user = $this->users->firstOrNew(['email' => $result['email']]);
 
             if (!$user->id) {
-                $user->name = $result['name'];
-                $user->save();
+                $this->users->update(['name' => $result['name']], $user);
             }
 
             Auth::login($user);
@@ -108,11 +110,10 @@ class AuthController extends BaseController
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
 
-            $user = User::firstOrNew(['email' => $result['email']]);
+            $user = $this->users->firstOrNew(['email' => $result['email']]);
 
             if (!$user->id) {
-                $user->name = $result['name'];
-                $user->save();
+                $this->users->update(['name' => $result['name']], $user);
             }
 
             Auth::login($user);

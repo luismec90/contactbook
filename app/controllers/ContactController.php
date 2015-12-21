@@ -1,43 +1,33 @@
 <?php
 
+use App\Repositories\ContactRepository;
+
 class ContactController extends BaseController
 {
-    private $activeCampaignURL = "https://luisfer.api-us1.com";
+    private $activeCampaignApiURL = "https://luisfer.api-us1.com";
     private $activeCampaignApiKey = "af258ef86abbc89fcbeab50a4bc75b97deb7e0486d7d1f355e9b4462871244ce8307f659";
+
+    protected $contacts;
+
+    public function __construct(ContactRepository $contacts)
+    {
+        $this->contacts = $contacts;
+    }
 
     public function index()
     {
-        $contacts = Auth::user()
-            ->contacts()
-            ->get();
+        $contacts = $this->contacts->getAll(Auth::user());
 
         return View::make('contacts.index', compact('contacts'));
     }
 
     public function show($contactID)
     {
-        $contact = Auth::user()
-            ->contacts()
-            ->find($contactID);
-
+        $contact = $this->contacts->find($contactID, Auth::user());
         if (is_null($contact)) {
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
-
         return Response::json(['data' => $contact]);
-    }
-
-    public function showCustomData($contactID)
-    {
-        $contact = Auth::user()
-            ->contacts()
-            ->find($contactID);
-
-        if (is_null($contact)) {
-            return Response::json(['errors' => ['The contact does not exist.']], 422);
-        }
-
-        return Response::json(['data' => $contact->customData]);
     }
 
     public function store()
@@ -48,17 +38,14 @@ class ContactController extends BaseController
             return Response::json(['errors' => $validator->errors()], 422);
         }
 
-        $contact = Auth::user()
-            ->contacts()
-            ->where('email', Input::get('email'))
-            ->first();
+        $contact = $this->contacts->getByEmail(Input::get('email'), Auth::user());
 
         if (!is_null($contact)) {
             return Response::json(['errors' => ['email' => 'The email has already been taken.']], 422);
         }
 
         $contact = new Contact(Input::all());
-        Auth::user()->contacts()->save($contact);
+        $this->contacts->save($contact, Auth::user());
         $this->syncContactActiveCampaign($contact, 1);
 
         return Response::json(['data' => $contact]);
@@ -67,29 +54,17 @@ class ContactController extends BaseController
     public function update($contactID)
     {
         $validator = Validator::make(Input::all(), Contact::$rules);
-
         if ($validator->fails()) {
             return Response::json(['errors' => $validator->errors()], 422);
         }
-
-        $contact = Auth::user()
-            ->contacts()
-            ->find($contactID);
-
+        $contact = $this->contacts->find($contactID, Auth::user());
         if (is_null($contact)) {
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
-
-        $totalEmailUses = Auth::user()
-            ->contacts()
-            ->where('email', Input::get('email'))
-            ->where('id', '<>', $contact->id)
-            ->count();
-
-        if ($totalEmailUses > 0) {
+        $totalOtherContactsWithSameEmail = $this->contacts->totalOtherContactsWithSameEmail(Input::get('email'), $contact, Auth::user());
+        if ($totalOtherContactsWithSameEmail > 0) {
             return Response::json(['errors' => ['The email belongs to another user.']], 422);
         }
-
         $contact->update(Input::all());
         $this->syncContactActiveCampaign($contact, 1);
 
@@ -98,15 +73,11 @@ class ContactController extends BaseController
 
     public function destroy($contactID)
     {
-        $contact = Auth::user()
-            ->contacts()
-            ->find($contactID);
-
+        $contact = $this->contacts->find($contactID, Auth::user());
         if (is_null($contact)) {
             return Response::json(['errors' => ['The contact does not exist.']], 422);
         }
-
-        $contact->delete();
+        $this->contacts->delete($contact);
         $this->syncContactActiveCampaign($contact, 2);
 
         return Response::json(['data' => $contact]);
@@ -114,7 +85,7 @@ class ContactController extends BaseController
 
     private function syncContactActiveCampaign($contact, $status)
     {
-        $ac = new ActiveCampaign($this->activeCampaignURL, $this->activeCampaignApiKey);
+        $ac = new ActiveCampaign($this->activeCampaignApiURL, $this->activeCampaignApiKey);
         $data = array(
             'email' => $contact->email,
             'first_name' => $contact->name,
