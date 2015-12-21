@@ -30,12 +30,10 @@
                             {{ Form::open(['route' => ['login_path'], 'method' => 'post','id'=>'login-form','style'=>'display: block;']) }}
 
                             <div class="form-group">
-                                <input type="email" name="email" id="email" tabindex="1"
-                                       class="form-control" placeholder="Email" value="">
+                                {{Form::email('email', null,['class' => 'form-control','placeholder'=>'Email','required'=>true])}}
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" id="password" tabindex="2"
-                                       class="form-control" placeholder="Password">
+                                {{Form::password('password',['class' => 'form-control','placeholder'=>'Password','required'=>true])}}
                             </div>
                             <div class="form-group text-center">
                                 <input type="checkbox" tabindex="3" class="" name="remember" id="remember">

@@ -29,19 +29,19 @@
                             {{ Form::open(['route' => ['signup_path'], 'method' => 'post','id'=>'register-form']) }}
 
                             <div class="form-group">
-                                {{Form::text('name', null,['class' => 'form-control','placeholder'=>'Name'])}}
+                                {{Form::text('name', null,['class' => 'form-control','placeholder'=>'Name','required'=>true])}}
                             </div>
 
                             <div class="form-group">
-                                {{Form::text('email', null,['class' => 'form-control','placeholder'=>'Email'])}}
+                                {{Form::email('email', null,['class' => 'form-control','placeholder'=>'Email','required'=>true])}}
                             </div>
 
                             <div class="form-group">
-                                {{Form::password('password',['class' => 'form-control','placeholder'=>'Password'])}}
+                                {{Form::password('password',['class' => 'form-control','placeholder'=>'Password','required'=>true])}}
                             </div>
 
                             <div class="form-group">
-                                {{Form::password('password_confirmation',['class' => 'form-control','placeholder'=>'Confirm password'])}}
+                                {{Form::password('password_confirmation',['class' => 'form-control','placeholder'=>'Confirm password','required'=>true])}}
                             </div>
 
                             <div class="form-group">

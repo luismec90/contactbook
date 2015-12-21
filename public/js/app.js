@@ -1,9 +1,8 @@
 $(function () {
 
     /*
-     *  Buttons
+     *  CRUD Buttons
      */
-
     $('#create-contact').click(function () {
         $('#form-create-contact')[0].reset();
         $('#modal-create-contact').modal();
@@ -106,7 +105,7 @@ $(function () {
                 coverOff();
                 $('#modal-create-contact').modal('hide');
                 updateContactsTable();
-                showMessage('Contact created!', 'success');
+                showMessage(response.message, 'success');
             }, error: function (response) {
                 coverOff();
                 handleAjaxErrors(response);
@@ -115,8 +114,6 @@ $(function () {
 
         return false;
     });
-
-
 
     /*
      *   SUBMIT FORMS
@@ -132,7 +129,7 @@ $(function () {
                 coverOff();
                 $('#modal-edit-contact').modal('hide');
                 updateContactsTable();
-                showMessage('Contact updated!', 'success');
+                showMessage(response.message, 'success');
             }, error: function (response) {
                 coverOff();
                 handleAjaxErrors(response);
@@ -153,7 +150,7 @@ $(function () {
             success: function (response) {
                 coverOff();
                 $('#modal-custom-data').modal('hide');
-                showMessage('Custom info updated!', 'success');
+                showMessage(response.message, 'success');
             }, error: function (response) {
                 coverOff();
                 handleAjaxErrors(response);
@@ -175,7 +172,7 @@ $(function () {
                 coverOff();
                 updateContactsTable();
                 $('#modal-delete-contact').modal('hide');
-                showMessage('Contact deleted!', 'success');
+                showMessage(response.message, 'success');
             }, error: function (response) {
                 coverOff();
                 handleAjaxErrors(response);

@@ -25,7 +25,7 @@ class AuthController extends BaseController
             return Redirect::intended('/');
         }
 
-        return Redirect::back()->withErrors(['Email or password incorrect!'])->withInput();
+        return Redirect::back()->withErrors(['Invalid email or password.'])->withInput();
     }
 
     public function showSignup()
@@ -41,7 +41,7 @@ class AuthController extends BaseController
             return Redirect::back()->withInput()->withErrors($validation);
         }
 
-        $user = $this->user->create(Input::all());
+        $user = $this->users->create(Input::all());
 
         Auth::login($user);
 

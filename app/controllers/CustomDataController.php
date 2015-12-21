@@ -45,6 +45,6 @@ class CustomDataController extends BaseController
 
         $this->activeCampaign->sync($contact, 1);
 
-        return Response::json();
+        return Response::json(['message' => 'Custom fields updated.']);
     }
 }
