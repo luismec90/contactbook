@@ -74,6 +74,8 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
+
+
             if(empty($result['email'])){
                 Flash::error('We need your email at least.');
                 return Redirect::back();
@@ -115,6 +117,8 @@ class AuthController extends BaseController
                 Flash::error('We need your email at least.');
                 return Redirect::back();
             }
+
+            dd($result);
 
             $user = $this->users->firstOrCreate($result);
 
