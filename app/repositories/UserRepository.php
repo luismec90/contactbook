@@ -18,9 +18,14 @@ class UserRepository
         return $user;
     }
 
-    public function firstOrNew($data)
+    public function firstOrCreate($data)
     {
-        return User::firstOrNew($data);
+        $user = User::firstOrNew(['email' => $data['email']]);
+        if (!$user->id) {
+            $user->name = $data['name'];
+            $user->save();
+        }
+        return  $user;
     }
 
     public function update($data, $user)

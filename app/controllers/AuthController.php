@@ -74,11 +74,7 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
-            $user = $this->users->firstOrNew(['email' => $result['email']]);
-
-            if (!$user->id) {
-                $user = $this->users->update(['name' => $result['name']], $user);
-            }
+            $user = $this->users->firstOrCrate($result);
 
             Auth::login($user);
 
@@ -110,12 +106,7 @@ class AuthController extends BaseController
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
 
-            $user = $this->users->firstOrNew(['email' => $result['email']]);
-            var_dump($user);
-            if (!$user->id) {
-                $user = $this->users->update(['name' => $result['name']], $user);
-                dd($user);
-            }
+            $user = $this->users->firstOrCrate($result);
 
             Auth::login($user);
 
