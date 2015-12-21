@@ -74,6 +74,11 @@ class AuthController extends BaseController
 
             $result = json_decode($gh->request('user'), true);
 
+            if(empty($result['email'])){
+                Flash::error('We need your email at least.');
+                return Redirect::back();
+            }
+
             $user = $this->users->firstOrCreate($result);
 
             Auth::login($user);
@@ -105,6 +110,11 @@ class AuthController extends BaseController
 
             // Send a request with it
             $result = json_decode($fb->request('/me?fields=name,email'), true);
+
+            if(empty($result['email'])){
+                Flash::error('We need your email at least.');
+                return Redirect::back();
+            }
 
             $user = $this->users->firstOrCreate($result);
 
