@@ -24,7 +24,6 @@ class ContactController extends BaseController
         } else {
             return View::make('contacts.index', compact('contacts'));
         }
-
     }
 
     public function search($criteria = '')

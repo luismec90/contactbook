@@ -77,7 +77,7 @@ class AuthController extends BaseController
             $user = $this->users->firstOrNew(['email' => $result['email']]);
 
             if (!$user->id) {
-                $this->users->update(['name' => $result['name']], $user);
+                $user = $this->users->update(['name' => $result['name']], $user);
             }
 
             Auth::login($user);
@@ -113,7 +113,7 @@ class AuthController extends BaseController
             $user = $this->users->firstOrNew(['email' => $result['email']]);
 
             if (!$user->id) {
-                $this->users->update(['name' => $result['name']], $user);
+                $user = $this->users->update(['name' => $result['name']], $user);
             }
 
             Auth::login($user);
