@@ -4,23 +4,44 @@ use App\Repositories\UserRepository;
 
 class AuthController extends BaseController
 {
+
+    /**
+     * The user repository instance.
+     *
+     * @var App\Repositories\UserRepository;
+     */
     protected $users;
 
+    /**
+     * Create a new authentication controller instance.
+     *
+     * @param  App\Repositories\UserRepository $users
+     * @return void
+     */
     public function __construct(UserRepository $users)
     {
         $this->users = $users;
     }
 
+    /**
+     * Show the application log in form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function showLogin()
     {
         return View::make('auth.login');
     }
 
+    /**
+     * Handle a log in request for the application.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postLogin()
     {
         $data = ['email' => Input::get('email'),
             'password' => Input::get('password')];
-
         if (Auth::attempt($data, Input::get('remember'))) {
             return Redirect::intended('/');
         }
@@ -28,33 +49,50 @@ class AuthController extends BaseController
         return Redirect::back()->withErrors(['Invalid email or password.'])->withInput();
     }
 
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function showSignup()
     {
         return View::make('auth.signup');
     }
 
+    /**
+     * Handle a sign un request for the application.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postSignup()
     {
         $validation = Validator::make(Input::all(), User::$rules);
-
         if ($validation->fails()) {
             return Redirect::back()->withInput()->withErrors($validation);
         }
 
         $user = $this->users->create(Input::all());
-
         Auth::login($user);
 
         return Redirect::route('contacts.index');
     }
 
+    /**
+     * Handle a log out request for the application.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout()
     {
         Auth::logout();
-
         return Redirect::route('login_path');
     }
 
+    /**
+     * Handle the Facebook log in/sign up.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function facebook()
     {
         // get data from input
@@ -91,6 +129,11 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * Handle the Github log in/sign up.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function github()
     {
         // get data from input

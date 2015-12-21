@@ -7,9 +7,27 @@ use Contact;
 
 class ActiveCampaignRepository
 {
+    /**
+     * Credentials to connect with ActiveCampaign Api.
+     *
+     * @var string;
+     */
     private $activeCampaignApiURL = "https://luisfer.api-us1.com";
+
+    /**
+     * Credentials to connect with ActiveCampaign Api.
+     *
+     * @var string;
+     */
     private $activeCampaignApiKey = "af258ef86abbc89fcbeab50a4bc75b97deb7e0486d7d1f355e9b4462871244ce8307f659";
 
+    /**
+     * Handle the custom data persistence on ActiveCampaign Api.
+     *
+     * @param  Contact $contact
+     * @param  int $status
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function sync(Contact $contact, $status)
     {
         $ac = new ActiveCampaign($this->activeCampaignApiURL, $this->activeCampaignApiKey);
