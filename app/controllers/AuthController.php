@@ -83,6 +83,8 @@ class AuthController extends BaseController
 
             $user = $this->users->firstOrCreate($result);
 
+            dd($result);
+
             Auth::login($user);
 
             return Redirect::route('contacts.index');
